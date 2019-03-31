@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fast base64 decode</title>
+	<script type="text/javascript">
+		function decodeClicked() {
+			document.getElementById("destination").value = window.atob(document.getElementById("source").value);
+		}
+	</script>
+</head>
+<body>
+<div>Fast base64 decoding. Optimized for speed, loads quickly, everything happens in your browser, not server interaction needed.
+</div>
+
+Paste base64-encoded text below
+<textarea id="source"></textarea>
+<button onclick="decodeClicked()">Decode!</button>
+
+<textarea id="destination"></textarea>
+</body>
+</html>
