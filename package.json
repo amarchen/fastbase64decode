@@ -1,0 +1,19 @@
+{
+  "name": "fastbase64decode",
+  "version": "0.0.1",
+  "description": "Fast base64decoder",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amarchen/fastbase64decode.git"
+  },
+  "author": "",
+  "license": "No license",
+  "bugs": {
+    "url": "https://github.com/amarchen/fastbase64decode/issues"
+  },
+  "homepage": "https://github.com/amarchen/fastbase64decode#readme"
+}
