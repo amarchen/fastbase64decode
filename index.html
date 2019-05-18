@@ -4,6 +4,7 @@
 	<title>Fast base64 decode</title>
 	<script type="text/javascript">
 		function decodeSource() {
+			console.log("decodeSource")
 			document.getElementById("destination").value = window.atob(document.getElementById("source").value);
 		}
 	</script>
@@ -41,7 +42,7 @@
 		
 		<div class="titleAndBox">
 			<div class="boxTitle">Paste base64-encoded text below</div>
-			<textarea class="largeArea" id="source" onchange="decodeSource"></textarea>
+			<textarea class="largeArea" id="source" oninput="decodeSource()"></textarea>
 		</div>
 
 		<div class="titleAndBox">
