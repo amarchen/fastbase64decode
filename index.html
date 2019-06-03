@@ -18,7 +18,30 @@
 		}
 
 		function decodeSource() {
-			document.getElementById("destination").value = b64Decode(document.getElementById("source").value);
+			document.getElementById("decodingDestination").value = b64Decode(document.getElementById("decodingSource").value);
+		}
+
+		function encodeSource() {
+			document.getElementById("encodingDestination").value = b64Encode(document.getElementById("encodingSource").value);
+		}
+
+		/**
+		 * Sets initial tab and title and whatever needed for when this code is running on encode/decode address
+		 * @param decodingSide If true, we are running on the decoding site. If false - on the encoding site
+		 */
+		function setDefaultSide( decodingSide ) {
+			document.getElementById("siteTitle").innerHTML = decodingSide ? "Base64 decode" : "Base64 encode";
+			document.getElementById(decodingSide ? "tab-decode" : "tab-encode").checked = true;
+		}
+
+		function documentLoaded() {
+			if(window.location.hash.indexOf("decode") !== -1) {
+				setDefaultSide( true )
+			} else if(window.location.hash.indexOf("encode") !== -1) {
+				setDefaultSide( false )
+			} else if (window.location.href.indexOf("decode") !== -1) {
+				setDefaultSide( true )
+			}
 		}
 	</script>
 	<style type="text/css">
@@ -39,7 +62,7 @@
 			padding-right: 16px;
 		}
 		.titleAndBox {
-			margin-top:16px;
+			margin-top: 0;
 		}
 		textarea.largeArea {
 			width: 100%;
@@ -52,26 +75,118 @@
 		div.textIntro > :last-child {
 			margin-bottom: 0;
 		}
+
+		* {
+		  box-sizing: border-box;
+		}
+
+		.tabs {
+		  display: flex;
+		  flex-wrap: wrap;
+		  max-width: 800px;
+		  background: #efefef;
+		  box-shadow: 0 48px 80px -32px rgba(0,0,0,0.3);
+		}
+		.tabinput {
+		  position: absolute;
+		  opacity: 0;
+		}
+		.label {
+		  width: 100%;
+		  padding: 20px 16px;
+		  background: #e5e5e5;
+		  cursor: pointer;
+		  font-weight: bold;
+		  font-size: 18px;
+		  color: #7f7f7f;
+		  transition: background 0.1s, color 0.1s;
+		}
+
+		.label:hover {
+		  background: #d8d8d8;
+		}
+
+		.label:active {
+		  background: #ccc;
+		}
+
+		.tabinput:focus + .label {
+		  box-shadow: inset 0px 0px 0px 3px #2aa1c0;
+		  z-index: 1;
+		}
+
+		.tabinput:checked + .label {
+		  background: #fff;
+		  color: #000;
+		}
+
+		@media (min-width: 600px) {
+		  .label {
+		    width: auto;
+		  }
+		}
+		.panel {
+		  width: 100%;
+		  display: none;
+		  padding: 12px 16px 16px;
+		  background: #fff;
+		}
+
+		@media (min-width: 600px) {
+		  .panel {
+		    order: 99;
+		  }
+		}
+
+		.tabinput:checked + .label + .panel {
+		  display: block;
+		}
 	</style>
 </head>
-<body>
+<body onload="documentLoaded()">
 	<div class="mainContainer">
 		<div class="textIntro">
+			<h1 id="siteTitle">Base64 decode</h1>
+			<h2>UTF-8 compatible. Nothing leaves your browser.</h2>
 			<div>No page reloads, minimal page optimized for fast loading. We do not use cookies for tracking or anything else, the data you paste never leaves the browser.
 			</div>
 
-			<div>Base64 is a format for encoding bytes, not strings, so there isn't exactly a standard for encoding non-ASCII characters. Here we assume everything you paste is UTF-8 and was gone through <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_4_%E2%80%93_escaping_the_string_before_encoding_it">URI-encoding to make an ASCII representation</a>. It is quite standard approach and for example, Mac's base64 utility behaves the same way.
-			</div>
-		</div>
-		
-		<div class="titleAndBox">
-			<div class="boxTitle">Paste base64-encoded text below</div>
-			<textarea class="largeArea" id="source" placeholder="VGhpcyBpcyBhIHNpdGUgZm9yIGJhc2U2NCBkZWNvZGluZyB0aGF0IGRvZXMgbm90IHRyYW5zbWl0IHlvdXIgZGF0YSBhbnl3aGVyZSBhbmQgdXNlcyAgemVybyBjb29raWVzIQ==" oninput="decodeSource()"></textarea>
 		</div>
 
-		<div class="titleAndBox">
-			<div class="boxTitle">Get decoded text from here<div>
-			<textarea class="largeArea" id="destination" placeholder="This is a site for base64 decoding that does not transmit your data anywhere and uses  zero cookies!"></textarea>
+		<div class="tabs">
+		  <input name="tabs" type="radio" id="tab-encode" checked="checked" class="tabinput"/>
+		  <label for="tab-encode" class="label">Encode</label>
+		  <div class="panel">
+		    <div class="titleAndBox">
+				<div class="boxTitle">Paste text to be encoded below</div>
+				<textarea class="largeArea" id="encodingSource" placeholder="This is a site for base64 encoding that does not transmit your data anywhere and uses zero cookies!" oninput="encodeSource()"></textarea>
+			</div>
+
+			<div class="titleAndBox">
+				<div class="boxTitle">Get base64 encoded text from here</div>
+				<textarea class="largeArea" id="encodingDestination" placeholder="VGhpcyBpcyBhIHNpdGUgZm9yIGJhc2U2NCBlbmNvZGluZyB0aGF0IGRvZXMgbm90IHRyYW5zbWl0IHlvdXIgZGF0YSBhbnl3aGVyZSBhbmQgdXNlcyAgemVybyBjb29raWVzIQ=="></textarea>
+			</div>
+		  </div>
+
+		  <input name="tabs" type="radio" id="tab-decode" class="tabinput"/>
+		  <label for="tab-decode" class="label">Decode</label>
+		  <div class="panel">		   
+		    <div class="titleAndBox">
+				<div class="boxTitle">Paste base64-encoded text below</div>
+				<textarea class="largeArea" id="decodingSource" placeholder="VGhpcyBpcyBhIHNpdGUgZm9yIGJhc2U2NCBlbmNvZGluZyB0aGF0IGRvZXMgbm90IHRyYW5zbWl0IHlvdXIgZGF0YSBhbnl3aGVyZSBhbmQgdXNlcyB6ZXJvIGNvb2tpZXMh" oninput="decodeSource()"></textarea>
+			</div>
+
+			<div class="titleAndBox">
+				<div class="boxTitle">Get decoded text from here</div>
+				<textarea class="largeArea" id="decodingDestination" placeholder="This is a site for base64 decoding that does not transmit your data anywhere and uses  zero cookies!"></textarea>
+			</div>
+		  </div>
+
+		</div>
+	
+
+		<h3>How we handle Unicode</h3>
+		<div>Base64 is a format for encoding bytes, not strings, so there isn't exactly a standard for encoding non-ASCII characters. Here we assume everything you paste is UTF-8 and was gone through <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_4_%E2%80%93_escaping_the_string_before_encoding_it">URI-encoding to make an ASCII representation</a>. It is quite standard approach and for example, Mac's base64 utility behaves the same way.
 		</div>
 	</div>
 </body>
