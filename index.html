@@ -30,7 +30,7 @@
 		 * @param decodingSide If true, we are running on the decoding site. If false - on the encoding site
 		 */
 		function setDefaultSide( decodingSide ) {
-			debugger;
+			// debugger;
 			console.log("decodingSide", decodingSide)
 			console.log(document.getElementById("siteTitle"))
 			document.getElementById("siteTitle").innerHTML = decodingSide ? "Base64 decode" : "Base64 encode";
@@ -38,6 +38,7 @@
 		}
 
 		function documentLoaded() {
+			console.log("documentLoaded")
 			if(window.location.hash.indexOf("decode") !== -1) {
 				setDefaultSide( true )
 			} else if(window.location.hash.indexOf("encode") !== -1) {
