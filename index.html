@@ -30,6 +30,9 @@
 		 * @param decodingSide If true, we are running on the decoding site. If false - on the encoding site
 		 */
 		function setDefaultSide( decodingSide ) {
+			debugger;
+			console.log("decodingSide", decodingSide)
+			console.log(document.getElementById("siteTitle"))
 			document.getElementById("siteTitle").innerHTML = decodingSide ? "Base64 decode" : "Base64 encode";
 			document.getElementById(decodingSide ? "tab-decode" : "tab-encode").checked = true;
 		}
