@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p build && cp index.html build/"
+    "build": "mkdir -p build && cp index.html build/ && cp ads.txt build/"
   },
   "repository": {
     "type": "git",
